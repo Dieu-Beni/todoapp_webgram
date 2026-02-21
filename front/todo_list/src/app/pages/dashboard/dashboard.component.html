@@ -1,0 +1,127 @@
+<div class="dashboard">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="user-section">
+      <span class="material-icons user-icon">account_circle</span>
+      <div>
+        <p>Bonjour</p>
+        <h3>Utilisateur</h3>
+      </div>
+    </div>
+
+    <div class="icons">
+
+      <!-- Barre de recherche -->
+      <div class="search-box" *ngIf="showSearch">
+        <input 
+          type="text" 
+          placeholder="Rechercher une tâche..."
+          [(ngModel)]="searchText"
+        />
+      </div>
+
+      <!-- Icône recherche -->
+      <span 
+        class="material-icons clickable"
+        (click)="toggleSearch()"
+      >
+        search
+      </span>
+
+      <!-- Icône notification -->
+      <span class="material-icons clickable">
+        notifications
+      </span>
+
+    </div>
+  </div>
+
+  <!-- CERCLE PROGRESSION -->
+  <div class="progress-container">
+    <div class="circle" [style.--progress]="progress">
+      <div class="inside">
+        {{ progress }}%
+      </div>
+    </div>
+
+    <p>{{ completedTasks }} sur {{ totalTasks }} tâches terminées</p>
+  </div>
+
+  <!-- FILTRES -->
+  <div class="filters">
+    <select>
+      <option>Priorité</option>
+      <option>Élevée</option>
+      <option>Moyenne</option>
+      <option>Basse</option>
+    </select>
+
+    <select>
+      <option>État</option>
+      <option>En cours</option>
+      <option>Fini</option>
+    </select>
+  </div>
+
+  <!-- LISTE DES TACHES -->
+  <div class="task-list">
+
+  <div 
+    class="task"
+    *ngFor="let task of filteredTasks; let i = index"
+    [ngClass]="task.priority"
+  >
+
+    <div class="task-top">
+      <input 
+        type="checkbox"
+        [checked]="task.completed"
+        (change)="toggleTask(task)"
+      />
+
+      <h4 [class.done]="task.completed">
+        {{ task.title }}
+      </h4>
+    </div>
+
+    <div class="task-actions">
+      <button (click)="editTask(task)">Modifier</button>
+      <button class="delete" (click)="deleteTask(i)">Supprimer</button>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <!-- MODAL AJOUT TACHE -->
+<div class="modal" *ngIf="showAddModal">
+  <div class="modal-content">
+
+    <h3>Nouvelle tâche</h3>
+
+    <input 
+      type="text" 
+      placeholder="Titre de la tâche"
+      [(ngModel)]="newTaskTitle"
+    />
+
+    <select [(ngModel)]="newTaskPriority">
+      <option value="high">Priorité élevée</option>
+      <option value="medium">Priorité moyenne</option>
+      <option value="low">Priorité basse</option>
+    </select>
+
+    <div class="modal-buttons">
+      <button (click)="addTask()">Ajouter</button>
+      <button class="cancel" (click)="showAddModal = false">Annuler</button>
+    </div>
+
+  </div>
+</div>
+
+  <!-- BOUTON AJOUT -->
+<button class="add-btn" (click)="showAddModal = true">+</button>
+
+</div>
