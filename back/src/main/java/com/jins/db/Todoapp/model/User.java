@@ -1,5 +1,6 @@
 package com.jins.db.Todoapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "utilisateurs_todo")
 @RequiredArgsConstructor
 @Getter
 @Setter
@@ -19,8 +20,10 @@ public class User {
     private String nom;
     @Column(unique = true)
     private String email;
+    private String phone;
+    @JsonIgnore
     private String password;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Tache> taches;
 }

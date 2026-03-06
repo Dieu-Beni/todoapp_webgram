@@ -3,10 +3,11 @@ package com.jins.db.Todoapp.dto;
 import com.jins.db.Todoapp.utils.Etat;
 import com.jins.db.Todoapp.utils.Priorite;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Getter
@@ -15,14 +16,14 @@ public class CreateTacheRequest {
     private String titre;
     @NotBlank(message = "Le contenu est obligatoire")
     private String contenu;
-    @NotBlank(message = "La date est obligatoire")
+    @NotNull(message = "La date est obligatoire")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date date;
-    @NotBlank(message = "L'heure est obligatoire")
-    private Time heure;
-    @NotBlank(message = "L'etat es obligatoire")
+    @NotNull(message = "L'heure est obligatoire")
+    private LocalTime heure;
+    @NotNull(message = "L'etat es obligatoire")
     private Etat etat;
-    @NotBlank(message = "La priorite est ob;ligatoire")
+    @NotNull(message = "La priorite est ob;ligatoire")
     private Priorite priorite;
 
 }
