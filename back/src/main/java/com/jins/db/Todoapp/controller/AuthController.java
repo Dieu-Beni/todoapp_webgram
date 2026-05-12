@@ -40,9 +40,22 @@ public class AuthController {
         User user = new User();
         user.setNom(request.getNom());
         user.setEmail(request.getEmail());
+        user.setPhone(request.getPhone());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        return ResponseEntity.ok(userService.Create(user));
+        try {
+            var userSaved = userService.Create(user);
+            Authentication authentication =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userSaved.getEmail(), request.getPassword()));
+            if (authentication.isAuthenticated()){
+                Map<String, Object> authData = new HashMap<>();
+                authData.put("token", jwtUtils.generateToken(request.getEmail()));
+                authData.put("type", "Bearer");
+                authData.put("user", userSaved);
+                return ResponseEntity.ok(authData);
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }catch (Exception exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
     }
 
     @PostMapping("/login")
@@ -54,6 +67,7 @@ public class AuthController {
                 Map<String, Object> authData = new HashMap<>();
                 authData.put("token", jwtUtils.generateToken(request.getEmail()));
                 authData.put("type", "Bearer");
+                authData.put("user", userService.FindByEmail(request.getEmail()));
                 return ResponseEntity.ok(authData);
             }
             return ResponseEntity.badRequest().body("Wrong Credentials");

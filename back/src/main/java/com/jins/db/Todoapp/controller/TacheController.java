@@ -73,5 +73,14 @@ public class TacheController {
         }
     }
 
+    @PutMapping("complete/{id}")
+    public ResponseEntity<?> complete(@PathVariable Long id) {
+        try {
+            Tache tache = tacheService.completeTask(id);
+            return ResponseEntity.ok().body(tache);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 }

@@ -4,6 +4,7 @@ import com.jins.db.Todoapp.dto.CreateTacheRequest;
 import com.jins.db.Todoapp.model.Tache;
 import com.jins.db.Todoapp.model.User;
 import com.jins.db.Todoapp.repository.TacheRepository;
+import com.jins.db.Todoapp.utils.Etat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -78,6 +79,13 @@ public class TacheService {
         tache.setDate(request.getDate());
         tache.setUser(user);
         return tache;
+    }
+
+    public Tache completeTask(Long id){
+        var task = tacheRepository.findById(id).orElse(null);
+        if (task == null) return null;
+        task.setEtat(Etat.FINI);
+        return tacheRepository.save(task);
     }
 
 }

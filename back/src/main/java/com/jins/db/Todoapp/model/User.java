@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "utilisateurs_todo")
+@Table(name = "users")
 @RequiredArgsConstructor
 @Getter
 @Setter

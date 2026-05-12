@@ -20,12 +20,14 @@ public class UserService {
     public User Create(User user) {
         return userRepository.save(user);
     }
+
     public User Update(User user, Long id) {
         User oldUser = GetById(id);
         if (oldUser != null) {
-            oldUser.setPassword(user.getPassword());
-            oldUser.setEmail(user.getEmail());
-            oldUser.setNom(user.getNom());
+            if (user.getPassword() != null) oldUser.setPassword(user.getPassword());
+            if (user.getEmail() != null) oldUser.setEmail(user.getEmail());
+            if (user.getNom() != null) oldUser.setNom(user.getNom());
+            if (user.getPhone() != null) oldUser.setPhone(user.getPhone());
             return userRepository.save(oldUser);
         }
         return null;
